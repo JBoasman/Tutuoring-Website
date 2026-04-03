@@ -1,1 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boasman Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #e8e3d9;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a0;
+    --rust: #b5461e;
+    --muted: #6e6860;
+    --border: #cdc6b8;
+    --physics: #1a3a5c;
+    --biology: #1a4a2e;
+    --overlay: rgba(15,14,12,0.65);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; cursor: pointer;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--ink); }
+
+  /* PAGES */
+  .page { display: none; min-height: 100vh; padding-top: 72px; }
+  .page.active { display: block; }
+
+  /* ===== HOME PAGE ===== */
+  #home { background: var(--paper); }
+
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 72px);
+  }
+  .hero-left {
+    padding: 6rem 4rem 4rem 5rem;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+  .hero-tag {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.8rem;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 4.8rem);
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--ink);
+    margin-bottom: 2rem;
+  }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-desc {
+    font-size: 0.78rem; line-height: 1.9;
+    color: var(--muted); max-width: 420px;
+    margin-bottom: 3rem;
+  }
+  .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 0.85rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; border: none; transition: all 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--gold); color: var(--ink); }
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--ink); }
+
+  .hero-right {
+    display: grid; grid-template-rows: 1fr 1fr;
+  }
+  .hero-card {
+    padding: 3.5rem; display: flex; flex-direction: column;
+    justify-content: space-between; cursor: pointer;
+    transition: background 0.3s;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-card:hover { background: var(--ink); }
+  .hero-card:hover .card-title,
+  .hero-card:hover .card-desc,
+  .hero-card:hover .card-tag { color: var(--paper); }
+  .hero-card:hover .card-arrow { color: var(--gold); }
+  .card-tag {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; color: var(--ink);
+    margin-bottom: 1rem; transition: color 0.3s;
+  }
+  .card-desc { font-size: 0.72rem; line-height: 1.8; color: var(--muted); transition: color 0.3s; }
+  .card-arrow { font-size: 1.5rem; color: var(--border); align-self: flex-end; transition: color 0.3s; }
+
+  /* PRICING SECTION */
+  .pricing-section {
+    padding: 6rem 5rem;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+  }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.2rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 300; line-height: 1.2;
+  }
+  .pricing-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  }
+  .price-card {
+    border: 1px solid var(--border); padding: 2rem;
+  }
+  .price-card-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; }
+  .price-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 300; color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .price-amount span { font-size: 1rem; color: var(--muted); }
+  .price-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.7; }
+
+  /* TUTORS SECTION */
+  .tutors-section {
+    padding: 5rem 5rem 7rem;
+    border-top: 1px solid var(--border);
+  }
+  .tutors-header { margin-bottom: 3.5rem; }
+  .tutors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .tutor-card-home {
+    border: 1px solid var(--border); padding: 2.2rem;
+  }
+  .tutor-initial {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 400;
+    margin-bottom: 1.2rem;
+  }
+  .tutor-name-h { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; margin-bottom: 0.3rem; }
+  .tutor-role-h { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .tutor-bio-h { font-size: 0.7rem; line-height: 1.75; color: var(--muted); }
+
+  /* ===== SUBJECT PAGES ===== */
+  #physics, #biology { background: var(--paper); }
+  .subj-hero {
+    padding: 5rem 5rem 4rem;
+    border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: end;
+  }
+  .subj-tag { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+  .physics-tag { color: var(--physics); }
+  .biology-tag { color: var(--biology); }
+  .subj-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 300; line-height: 1.05;
+  }
+  .subj-desc { font-size: 0.76rem; line-height: 2; color: var(--muted); }
+
+  /* BLURB */
+  .blurb-section { padding: 4rem 5rem; border-bottom: 1px solid var(--border); }
+  .blurb-inner { max-width: 780px; }
+  .blurb-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 300; line-height: 1.8; color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .blurb-detail { font-size: 0.73rem; line-height: 1.9; color: var(--muted); }
+
+  /* TOPICS */
+  .topics-row {
+    padding: 2.5rem 5rem; border-bottom: 1px solid var(--border);
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .topic-chip {
+    padding: 0.45rem 1.1rem; border: 1px solid var(--border);
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* TUTORS GRID */
+  .tutors-booking { padding: 4rem 5rem; }
+  .tutors-booking-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300; margin-bottom: 0.5rem;
+  }
+  .tutors-booking-sub { font-size: 0.7rem; color: var(--muted); margin-bottom: 3rem; }
+  .tutors-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .tutor-card {
+    border: 1px solid var(--border); padding: 2.2rem;
+    cursor: pointer; transition: all 0.25s; position: relative;
+  }
+  .tutor-card:hover { border-color: var(--ink); transform: translateY(-3px); }
+  .tutor-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; margin-bottom: 1.3rem;
+  }
+  .physics-avatar { background: rgba(26,58,92,0.1); color: var(--physics); }
+  .biology-avatar { background: rgba(26,74,46,0.1); color: var(--biology); }
+  .tutor-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.3rem; }
+  .tutor-cred { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .tutor-spec { font-size: 0.7rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .tutor-book-btn {
+    width: 100%; padding: 0.75rem;
+    background: transparent; border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s; color: var(--ink);
+  }
+  .tutor-card:hover .tutor-book-btn { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--overlay);
+    display: none; align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper); width: 100%; max-width: 560px;
+    max-height: 90vh; overflow-y: auto;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .modal-header {
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: start;
+  }
+  .modal-tutor-name { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; }
+  .modal-subject { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-top: 0.3rem; }
+  .modal-close {
+    background: none; border: none; cursor: pointer;
+    font-size: 1.2rem; color: var(--muted); line-height: 1;
+    padding: 0.2rem; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--ink); }
+
+  /* STEP INDICATOR */
+  .steps { display: flex; padding: 1.5rem 2.5rem; gap: 0; border-bottom: 1px solid var(--border); }
+  .step {
+    flex: 1; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .step.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .step.done { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .modal-body { padding: 2rem 2.5rem; }
+
+  /* TIMESLOT STEP */
+  .time-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 1.5rem; }
+  .time-slot {
+    padding: 0.65rem 0.5rem; text-align: center;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.68rem; transition: all 0.15s; background: transparent;
+    font-family: 'DM Mono', monospace; color: var(--ink);
+  }
+  .time-slot:hover { border-color: var(--ink); }
+  .time-slot.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .time-day { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+  /* FORM STEP */
+  .form-group { margin-bottom: 1.4rem; }
+  .form-label {
+    display: block; font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+  }
+  .form-input, .form-select {
+    width: 100%; padding: 0.75rem 1rem;
+    border: 1px solid var(--border); background: var(--paper);
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    color: var(--ink); outline: none; transition: border 0.2s;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--ink); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* CONFIRM STEP */
+  .confirm-box { border: 1px solid var(--border); padding: 1.8rem; margin-bottom: 1.5rem; }
+  .confirm-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-key { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .confirm-val { font-size: 0.72rem; color: var(--ink); text-align: right; }
+  .confirm-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300;
+    margin-bottom: 0.3rem;
+  }
+  .confirm-price-note { font-size: 0.68rem; color: var(--muted); }
+
+  .modal-footer {
+    padding: 1.5rem 2.5rem 2rem;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 1rem; justify-content: flex-end;
+  }
+  .btn-sm {
+    padding: 0.7rem 1.6rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-sm-outline {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-sm-outline:hover { color: var(--ink); border-color: var(--ink); }
+  .btn-sm-primary { background: var(--ink); color: var(--paper); }
+  .btn-sm-primary:hover { background: var(--gold); color: var(--ink); }
+
+  /* SUCCESS */
+  .success-state {
+    padding: 3rem 2.5rem; text-align: center;
+  }
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(26,74,46,0.1); color: var(--biology);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin: 0 auto 1.5rem;
+  }
+  .success-title { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; margin-bottom: 0.8rem; }
+  .success-sub { font-size: 0.73rem; color: var(--muted); line-height: 1.8; }
+
+  /* ===== HERO CARD ANIMATIONS ===== */
+  .hero-card { position: relative; overflow: hidden; }
+  .hero-card-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    pointer-events: none; opacity: 0.18;
+    transition: opacity 0.4s;
+  }
+  .hero-card:hover .hero-card-canvas { opacity: 0.55; }
+
+  /* ===== FAQ PAGE ===== */
+  .faq-hero {
+    padding: 5rem 5rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq-hero-tag { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .faq-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 3.8rem); font-weight: 300; line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .faq-hero-sub { font-size: 0.75rem; color: var(--muted); line-height: 1.9; max-width: 540px; }
+
+  .faq-body { padding: 4rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+
+  .faq-group-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .faq-item { margin-bottom: 1.6rem; }
+  .faq-q {
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink);
+    margin-bottom: 0.5rem; font-weight: 500;
+  }
+  .faq-a { font-size: 0.7rem; color: var(--muted); line-height: 1.85; }
+
+  /* DEALS */
+  .deals-section { padding: 0 5rem 5rem; }
+  .deals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .deal-card {
+    border: 1px solid var(--border); padding: 2.2rem;
+    position: relative; overflow: hidden;
+  }
+  .deal-badge {
+    display: inline-block; font-size: 0.58rem; letter-spacing: 0.18em;
+    text-transform: uppercase; padding: 0.3rem 0.8rem;
+    background: var(--gold); color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+  .deal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 300; margin-bottom: 0.6rem;
+  }
+  .deal-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 300; color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .deal-price-was {
+    font-size: 0.68rem; color: var(--muted); text-decoration: line-through; margin-bottom: 1rem;
+  }
+  .deal-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.8; }
+  .deal-corner {
+    position: absolute; top: -1px; right: -1px;
+    width: 0; height: 0;
+    border-left: 36px solid transparent;
+    border-top: 36px solid var(--gold);
+  }
+
+  /* ===== RESOURCES PAGE ===== */
+  .resources-hero {
+    padding: 5rem 5rem 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .resources-body { padding: 4rem 5rem; }
+  .resources-section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.7rem; font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+  .resources-section-sub { font-size: 0.68rem; color: var(--muted); margin-bottom: 2rem; }
+  .resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-bottom: 4rem; }
+  .resource-card {
+    border: 1px solid var(--border); padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .resource-card:hover { border-color: var(--ink); transform: translateY(-2px); }
+  .resource-card a { text-decoration: none; color: inherit; }
+  .resource-type {
+    font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+    margin-bottom: 0.8rem; display: inline-block; padding: 0.25rem 0.7rem;
+  }
+  .rt-free { background: rgba(26,74,46,0.12); color: var(--biology); }
+  .rt-paid { background: rgba(201,168,76,0.18); color: #8a6e1e; }
+  .rt-external { background: rgba(26,58,92,0.1); color: var(--physics); }
+  .resource-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; margin-bottom: 0.4rem; }
+  .resource-desc { font-size: 0.68rem; color: var(--muted); line-height: 1.75; margin-bottom: 1rem; }
+  .resource-link {
+    font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); cursor: pointer;
+  }
+  .resource-price { font-size: 0.7rem; color: var(--ink); font-weight: 500; margin-bottom: 0.6rem; }
+
+  /* RESPONSIVE */
+  /* ===== STUDY BUDDIES EASTER EGG ===== */
+  .study-buddies {
+    padding: 4rem 5rem 5rem;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+  .buddies-trigger {
+    display: flex; align-items: center; gap: 0.8rem; cursor: pointer;
+    width: fit-content; margin: 0 auto; user-select: none;
+  }
+  .buddies-trigger-label {
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); transition: color 0.2s;
+  }
+  .buddies-trigger:hover .buddies-trigger-label { color: var(--ink); }
+  .buddies-paw { font-size: 1rem; animation: paw-wiggle 2.5s ease-in-out infinite; }
+  @keyframes paw-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    20% { transform: rotate(-15deg); }
+    40% { transform: rotate(12deg); }
+    60% { transform: rotate(-8deg); }
+    80% { transform: rotate(5deg); }
+  }
+  .buddies-content {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
+    opacity: 0;
+  }
+  .buddies-content.open { max-height: 900px; opacity: 1; }
+  .buddies-inner {
+    padding-top: 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .buddy-card {
+    border: 1px solid var(--border); overflow: hidden;
+    transition: transform 0.25s;
+  }
+  .buddy-card:hover { transform: translateY(-4px); }
+  .buddy-photo {
+    width: 100%; aspect-ratio: 3/4; object-fit: cover;
+    object-position: center top; display: block;
+  }
+  .buddy-photo-placeholder {
+    width: 100%; aspect-ratio: 3/4;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; background: rgba(201,168,76,0.1);
+  }
+  .buddy-info { padding: 1.6rem; }
+  .buddy-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300; margin-bottom: 0.3rem;
+  }
+  .buddy-role {
+    font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .buddy-bio { font-size: 0.7rem; color: var(--muted); line-height: 1.85; }
+  .buddy-tag {
+    display: inline-block; margin-top: 0.8rem;
+    font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; background: rgba(201,168,76,0.15); color: #7a6020;
+  }
+
+  @media (max-width: 768px) {
+    .study-buddies { padding: 3rem 1.5rem; }
+    .buddies-inner { grid-template-columns: 1fr; }
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 3rem 2rem; }
+    .hero-right { display: none; }
+    .pricing-section, .tutors-section, .tutors-booking { padding: 3rem 1.5rem; }
+    .pricing-section { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .tutors-grid, .tutors-cards { grid-template-columns: 1fr; }
+    .subj-hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+    .blurb-section, .topics-row { padding: 2.5rem 1.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .faq-body, .deals-section { padding: 2.5rem 1.5rem; }
+    .faq-body { grid-template-columns: 1fr; }
+    .deals-grid, .resources-grid { grid-template-columns: 1fr; }
+    .faq-hero, .resources-hero, .resources-body { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">Boasman<span>.</span></div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+    <a onclick="showPage('physics')" id="nav-physics">Physics</a>
+    <a onclick="showPage('biology')" id="nav-biology">Biology</a>
+    <a onclick="showPage('faq')" id="nav-faq">FAQ & Deals</a>
+    <a onclick="showPage('resources')" id="nav-resources">Resources</a>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="home" class="page active">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">— Boasman Family Tutoring</div>
+      <h1 class="hero-title">
+        Master the<br><em>science</em><br>that shapes<br>your world.
+      </h1>
+      <p class="hero-desc">
+        Boasman Tutoring is a family-owned service built on a simple belief: every student deserves a teacher who genuinely cares. Rob and Sarah Boasman are experienced, accredited educators — each holding a Master of Educational Leadership — who bring professional classroom expertise directly to your learning. Whether you're working through NCEA, Cambridge, IB, or preparing for university, you're in expert hands.
+      </p>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showPage('physics')">Explore Physics</button>
+        <button class="btn btn-outline" onclick="showPage('biology')">Explore Biology</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card" onclick="showPage('physics')">
+        <canvas class="hero-card-canvas" id="tesla-canvas"></canvas>
+        <div style="position:relative;z-index:1">
+          <div class="card-tag">— Physics Tutoring</div>
+          <div class="card-title">From mechanics<br>to quantum theory.</div>
+          <div class="card-desc">Structured programs for Year 10 through first-year university. Clear, rigorous, and designed around how you actually learn.</div>
+        </div>
+        <div class="card-arrow" style="position:relative;z-index:1">→</div>
+      </div>
+      <div class="hero-card" onclick="showPage('biology')">
+        <canvas class="hero-card-canvas" id="dna-canvas"></canvas>
+        <div style="position:relative;z-index:1">
+          <div class="card-tag">— Biology Tutoring</div>
+          <div class="card-title">Life science,<br>deeply understood.</div>
+          <div class="card-desc">Cellular biology, genetics, ecology, and human physiology — covered with the depth your exams demand and your curiosity deserves.</div>
+        </div>
+        <div class="card-arrow" style="position:relative;z-index:1">→</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing-section">
+    <div>
+      <div class="section-label">— Our Pricing</div>
+      <h2 class="section-title">Simple,<br>transparent rates.</h2>
+      <p style="font-size:0.68rem;color:var(--muted);line-height:1.8;margin-top:1rem;max-width:280px">Click any option below to begin booking your session.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card" style="cursor:pointer;transition:border-color 0.2s,transform 0.2s" onclick="openBookingFromHome('1','1')" onmouseover="this.style.borderColor='var(--ink)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+        <div class="price-card-label">Solo — 1 Hour</div>
+        <div class="price-amount">$100 <span>/ session</span></div>
+        <div class="price-desc">One student, one tutor. Focused, personalised instruction tailored entirely to your goals and current level.</div>
+        <div style="margin-top:1rem;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)">Book this →</div>
+      </div>
+      <div class="price-card" style="cursor:pointer;transition:border-color 0.2s,transform 0.2s" onclick="openBookingFromHome('1','2')" onmouseover="this.style.borderColor='var(--ink)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+        <div class="price-card-label">Solo — 2 Hours</div>
+        <div class="price-amount">$150 <span>/ session</span></div>
+        <div class="price-desc">Extended sessions for deeper dives. Ideal before assessments or when tackling complex new concepts.</div>
+        <div style="margin-top:1rem;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)">Book this →</div>
+      </div>
+      <div class="price-card" style="cursor:pointer;transition:border-color 0.2s,transform 0.2s" onclick="openBookingFromHome('2','1')" onmouseover="this.style.borderColor='var(--ink)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+        <div class="price-card-label">Pair — 1 Hour</div>
+        <div class="price-amount">$140 <span>/ session</span></div>
+        <div class="price-desc">Study with a friend. Two students, one tutor. Collaborative learning with the full benefit of expert guidance.</div>
+        <div style="margin-top:1rem;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)">Book this →</div>
+      </div>
+      <div class="price-card" style="cursor:pointer;transition:border-color 0.2s,transform 0.2s" onclick="openBookingFromHome('2','2')" onmouseover="this.style.borderColor='var(--ink)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border)';this.style.transform='none'">
+        <div class="price-card-label">Pair — 2 Hours</div>
+        <div class="price-amount">$200 <span>/ session</span></div>
+        <div class="price-desc">Two-hour pair session. Extended time for deeper coverage — split between two students for excellent value.</div>
+        <div style="margin-top:1rem;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)">Book this →</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tutors-section">
+    <div class="tutors-header">
+      <div class="section-label">— Meet the Tutors</div>
+      <h2 class="section-title">Professional teachers.<br>Personal attention.</h2>
+    </div>
+    <div class="tutors-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 780px;">
+      <div class="tutor-card-home">
+        <div class="tutor-initial" style="background:rgba(26,58,92,0.1);color:var(--physics)">R</div>
+        <div class="tutor-name-h">Rob Boasman</div>
+        <div class="tutor-role-h">Physics — MEd Leadership</div>
+        <div class="tutor-bio-h">Rob is an experienced classroom teacher holding a Master of Educational Leadership. With years of senior physics teaching across NCEA, Cambridge, and IB programmes, he brings professional rigour and genuine care to every tutoring session — helping students build both the conceptual understanding and exam technique they need to succeed.</div>
+      </div>
+      <div class="tutor-card-home">
+        <div class="tutor-initial" style="background:rgba(26,74,46,0.1);color:var(--biology)">S</div>
+        <div class="tutor-name-h">Sarah Boasman</div>
+        <div class="tutor-role-h">Biology — MEd Leadership</div>
+        <div class="tutor-bio-h">Sarah is a qualified and experienced biology teacher with a Master of Educational Leadership. She teaches across NCEA, Cambridge, and IB pathways and has a gift for making complex biological concepts genuinely accessible — including pre-med preparation for students heading into Health Sciences First Year programmes.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== PHYSICS PAGE ===== -->
+<div id="physics" class="page">
+  <section class="subj-hero">
+    <div>
+      <div class="subj-tag physics-tag">— Physics Tutoring</div>
+      <h1 class="subj-title" style="color:var(--physics)">Physics,<br>unravelled.</h1>
+    </div>
+    <div class="subj-desc">
+      Whether you're working through NCEA Level 1 mechanics or preparing for Cambridge A-Level and IB HL exams, Rob Boasman brings the clarity and rigour of a trained, experienced teacher to turn confusion into confidence. Sessions are built around your specific qualification pathway — not a one-size-fits-all curriculum.
+      <br><br>
+      Rob holds a Master of Educational Leadership and has extensive experience teaching senior physics. That professional background means you're getting someone who knows exactly how students learn, where they get stuck, and how to get them unstuck.
+    </div>
+  </section>
+
+  <section class="blurb-section">
+    <div class="blurb-inner">
+      <p class="blurb-text">
+        "Physics is the language the universe speaks. Our job is to teach you the grammar — so that every equation becomes a sentence you can read, not a wall you can't see past."
+      </p>
+      <p class="blurb-detail">
+        Rob's physics tutoring spans NCEA Levels 1–3, Cambridge IGCSE and A-Level, and IB Physics (SL and HL). For students bridging into university, Rob also provides transition support and assistance with first-year university physics content. Sessions can be structured as revision, concept-building, problem-solving workshops, or exam preparation — whatever you need most, every time you book.
+      </p>
+    </div>
+  </section>
+
+  <section class="topics-row">
+    <div class="topic-chip">Kinematics & Motion</div>
+    <div class="topic-chip">Forces & Newton's Laws</div>
+    <div class="topic-chip">Energy & Work</div>
+    <div class="topic-chip">Waves & Optics</div>
+    <div class="topic-chip">Electricity & Magnetism</div>
+    <div class="topic-chip">Electromagnetism</div>
+    <div class="topic-chip">Thermodynamics</div>
+    <div class="topic-chip">Nuclear & Modern Physics</div>
+    <div class="topic-chip">Quantum Theory</div>
+    <div class="topic-chip">Astrophysics (IB/NCEA)</div>
+    <div class="topic-chip">Relativity (IB HL)</div>
+    <div class="topic-chip">Rotational Motion</div>
+    <div class="topic-chip">Practical Skills & IA</div>
+  </section>
+
+  <section class="tutors-booking">
+    <div class="tutors-booking-title">Book a session with Rob</div>
+    <div class="tutors-booking-sub">Select a timeslot and complete your booking details below.</div>
+    <div class="tutors-cards" style="grid-template-columns: repeat(1, minmax(0, 340px));">
+      <div class="tutor-card" onclick="openModal('Rob Boasman', 'Physics', 'MEd Leadership')">
+        <div class="tutor-avatar physics-avatar">R</div>
+        <div class="tutor-name">Rob Boasman</div>
+        <div class="tutor-cred">Master of Educational Leadership</div>
+        <div class="tutor-spec">Experienced NZ physics teacher. NCEA Levels 1–3, Cambridge IGCSE & A-Level, IB SL & HL, and first-year university physics. Professional, structured, and student-focused.</div>
+        <button class="tutor-book-btn">View Available Times →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== BIOLOGY PAGE ===== -->
+<div id="biology" class="page">
+  <section class="subj-hero">
+    <div>
+      <div class="subj-tag biology-tag">— Biology Tutoring</div>
+      <h1 class="subj-title" style="color:var(--biology)">Life science,<br>made clear.</h1>
+    </div>
+    <div class="subj-desc">
+      Biology demands both precise recall and genuine conceptual understanding. Sarah Boasman bridges that gap — drawing on her experience as a trained, professional teacher to help students build a real mental model of how living systems work.
+      <br><br>
+      Sarah holds a Master of Educational Leadership and has taught biology across NCEA, Cambridge, and IB programmes. She knows where students struggle, how each qualification assesses understanding, and how to build the skills and confidence that translate to results on exam day.
+    </div>
+  </section>
+
+  <section class="blurb-section">
+    <div class="blurb-inner">
+      <p class="blurb-text">
+        "Biology is not a list of facts to memorise — it's a set of stories about how life solves problems. Once you understand the story, the details fall into place."
+      </p>
+      <p class="blurb-detail">
+        Sarah's biology tutoring spans NCEA Levels 1–3, Cambridge IGCSE and A-Level, IB Biology (SL and HL), and university bridging and first-year support. Sessions can be structured as revision, concept-building, or exam preparation, and are tailored entirely to your syllabus and assessment pathway.
+      </p>
+    </div>
+  </section>
+
+  <!-- Pre-Med horizontal banner -->
+  <section style="padding:3rem 5rem;border-bottom:1px solid var(--border);border-top:1px solid var(--border);background:rgba(26,74,46,0.04)">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:3rem;align-items:start">
+      <div>
+        <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--biology);margin-bottom:0.8rem">— Pre-Med Support</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;line-height:1.2">Getting into medicine<br>starts here.</div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--muted);line-height:1.9;padding-top:0.3rem">
+        Aspiring medical students face some of the most demanding biology content in the NZ system — from Health Sciences First Year (HSFY) at Otago and Auckland to the prerequisite biology knowledge needed for competitive entry. Sarah provides dedicated pre-med tutoring across cell biology, biochemistry, human physiology, genetics, and microbiology — the core areas that determine outcomes in HSFY and first-year health science programmes. Sessions can be tailored specifically to the Otago or Auckland HSFY structure, helping students build the depth and exam confidence they need for highly competitive cut-offs.
+      </div>
+    </div>
+  </section>
+
+  <section class="topics-row">
+    <div class="topic-chip">Cell Biology</div>
+    <div class="topic-chip">Genetics & Heredity</div>
+    <div class="topic-chip">DNA & Protein Synthesis</div>
+    <div class="topic-chip">Evolution & Natural Selection</div>
+    <div class="topic-chip">Human Physiology</div>
+    <div class="topic-chip">Ecology & Ecosystems</div>
+    <div class="topic-chip">Biochemistry</div>
+    <div class="topic-chip">Immune System</div>
+    <div class="topic-chip">Nervous System</div>
+    <div class="topic-chip">Reproduction & Development</div>
+    <div class="topic-chip">Microbiology</div>
+    <div class="topic-chip">Plant Biology (IB/NCEA)</div>
+    <div class="topic-chip">Practical Skills & IA</div>
+    <div class="topic-chip">HSFY / Pre-Med Content</div>
+  </section>
+
+  <section class="tutors-booking">
+    <div class="tutors-booking-title">Book a session with Sarah</div>
+    <div class="tutors-booking-sub">Select a timeslot and complete your booking details below.</div>
+    <div class="tutors-cards" style="grid-template-columns: repeat(1, minmax(0, 340px));">
+      <div class="tutor-card" onclick="openModal('Sarah Boasman', 'Biology', 'MEd Leadership')">
+        <div class="tutor-avatar biology-avatar">S</div>
+        <div class="tutor-name">Sarah Boasman</div>
+        <div class="tutor-cred">Master of Educational Leadership</div>
+        <div class="tutor-spec">NCEA Levels 1–3, Cambridge IGCSE & A-Level, IB SL & HL, first-year university, and pre-med (HSFY) support. Structured, caring, and results-focused.</div>
+        <button class="tutor-book-btn">View Available Times →</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== FAQ & DEALS PAGE ===== -->
+<div id="faq" class="page">
+  <section class="faq-hero">
+    <div class="faq-hero-tag">— Policies & Offers</div>
+    <h1 class="faq-hero-title">Deals &amp; FAQ</h1>
+    <p class="faq-hero-sub">Our current offers for students and families — plus everything you need to know about how we operate.</p>
+  </section>
+
+  <section class="deals-section" style="padding:4rem 5rem 3rem">
+    <div style="margin-bottom:2rem">
+      <div class="section-label">— Current Offers</div>
+      <h2 class="section-title">More tutoring,<br>better value.</h2>
+    </div>
+    <div class="deals-grid">
+
+      <div class="deal-card">
+        <div class="deal-corner"></div>
+        <div class="deal-badge">Package Deal</div>
+        <div class="deal-title">5-Session Pack</div>
+        <div class="deal-price">$400</div>
+        <div class="deal-price-was">Was $500 (5 × solo 1hr)</div>
+        <div class="deal-desc">Purchase a block of five one-hour solo sessions upfront and receive 20% off the standard rate. Ideal for students working toward NCEA, Cambridge, or IB exams, or families wanting consistent weekly support. Sessions can be used flexibly and don't expire.</div>
+      </div>
+
+      <div class="deal-card">
+        <div class="deal-corner"></div>
+        <div class="deal-badge">Referral Offer</div>
+        <div class="deal-title">Refer a Friend</div>
+        <div class="deal-price">50% off</div>
+        <div class="deal-price-was">One session each</div>
+        <div class="deal-desc">Know someone who'd benefit from tutoring? Refer them to Boasman Tutoring and when they complete their first paid session, you both receive your next one-hour solo session at half price. There's no limit to how many friends you can refer.</div>
+      </div>
+
+      <div class="deal-card">
+        <div class="deal-corner"></div>
+        <div class="deal-badge">Pair Sessions</div>
+        <div class="deal-title">Study Together</div>
+        <div class="deal-price">$140</div>
+        <div class="deal-price-was">vs $200 for two solo sessions</div>
+        <div class="deal-desc">Two students, one session. Pair tutoring is a great option for friends studying the same subject and level. A single one-hour pair session costs $140 total — saving $60 compared to two individual bookings.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="faq-body">
+    <div>
+      <div class="faq-group-title">Frequently Asked Questions</div>
+
+      <div class="faq-item">
+        <div class="faq-q">What is your cancellation policy?</div>
+        <div class="faq-a">We ask for a minimum of 4 hours notice to cancel or reschedule a session. Cancellations made with less than 4 hours notice will be charged the full session fee. We understand that life happens — if something urgent comes up, please get in touch directly and we'll always do our best to accommodate you.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if I need to reschedule?</div>
+        <div class="faq-a">Rescheduling is totally fine, provided you give at least 4 hours notice. Simply contact us via email or phone and we'll find a new time that works. Repeat rescheduling with short notice may result in a rescheduling fee.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Where do sessions take place?</div>
+        <div class="faq-a">Sessions are available both online and in person. Online sessions are conducted via video call (Zoom or Google Meet) — all you need is a device, a stable connection, and somewhere quiet to work. In-person sessions can be arranged depending on your location; please enquire directly to discuss availability.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">When are sessions available?</div>
+        <div class="faq-a">During the school week (Monday to Friday), sessions run from 5:00 PM to 7:00 PM NZST — designed to fit around a student's school day. On weekends (Saturday and Sunday), sessions are available from 12:00 PM to 5:00 PM NZST, giving more flexibility for longer or back-to-back bookings.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What year levels and qualifications do you cover?</div>
+        <div class="faq-a">We tutor across NCEA Levels 1–3, Cambridge IGCSE and A-Level, and IB (SL and HL) for both Physics and Biology. We also offer university bridging support and first-year university assistance, including pre-med preparation for HSFY programmes at Otago and Auckland.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">How do I pay?</div>
+        <div class="faq-a">Payment is collected at the start of each session. For package deals, payment is made upfront at the time of purchase. We accept bank transfer and most major payment methods.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can two students share a session?</div>
+        <div class="faq-a">Yes — pair sessions are available for two students booking together. The pair rate is $140 for one hour and $200 for two hours (total, not per student). Both students must be at a compatible level and studying the same qualification for the session to be effective.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="faq-group-title">Policies</div>
+
+      <div class="faq-item">
+        <div class="faq-q">Late arrivals</div>
+        <div class="faq-a">Sessions start at the booked time. If a student arrives late, the session will still end at the scheduled time. The full session fee applies regardless of arrival time.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What happens if the tutor cancels?</div>
+        <div class="faq-a">In the rare event we need to cancel a session, we will provide as much notice as possible and offer a full rescheduling at no additional cost. We are committed to reliability and respect your time.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Are sessions recorded?</div>
+        <div class="faq-a">Sessions are not recorded by default. If you'd like to record a session for personal study review, please let us know in advance so we can discuss the arrangement.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Do you provide notes or resources?</div>
+        <div class="faq-a">Yes — tutors may provide session summaries, worked examples, or supplementary notes where appropriate. Our Resources page also lists free and purchasable materials to support your study between sessions.</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="study-buddies">
+    <div class="buddies-trigger" onclick="toggleBuddies()" id="buddies-trigger">
+      <span class="buddies-paw">🐾</span>
+      <span class="buddies-trigger-label">Psst — meet our study buddies</span>
+      <span class="buddies-paw" style="animation-delay:0.4s">🐾</span>
+    </div>
+    <div class="buddies-content" id="buddies-content">
+      <div style="text-align:center;margin-bottom:0.5rem">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:0.4rem">Study Buddies</div>
+        <div style="font-size:0.68rem;color:var(--muted)">The unofficial mascots of Boasman Tutoring. They supervise every session. Mostly.</div>
+      </div>
+      <div class="buddies-inner">
+        <div class="buddy-card">
+          <img class="buddy-photo" src="charlie.png" alt="Charlie the dog">
+          <div class="buddy-info">
+            <div class="buddy-name">Charlie</div>
+            <div class="buddy-role">Chief Ball Officer · Physics Consultant</div>
+            <div class="buddy-bio">Charlie is the brains of the operation. Highly intelligent, deeply analytical, and absolutely, completely, 100% obsessed with playing ball. Will sit attentively through an entire session if there is even a remote possibility that a ball may be produced at the end of it. Has been known to derive meaningful insights from a tennis ball's trajectory. Probably understands projectile motion better than most Year 12 students.</div>
+            <span class="buddy-tag">🎾 Ball Enthusiast</span>
+          </div>
+        </div>
+        <div class="buddy-card">
+          <img class="buddy-photo" src="alphie.png" alt="Alphie the dog in a red jumper">
+          <div class="buddy-info">
+            <div class="buddy-name">Alphie</div>
+            <div class="buddy-role">Director of Noise · Biology Consultant</div>
+            <div class="buddy-bio">Alphie is a very good boy. What he lacks in brain cells he makes up for entirely in enthusiasm, volume, and a complete disregard for the concept of "indoor voices." Has yet to grasp that barking at his own reflection is not a viable strategy. Deeply committed to making his presence known at all times. We love him unconditionally and he contributes absolutely nothing to academic outcomes.</div>
+            <span class="buddy-tag">📢 Loud & Proud</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ===== RESOURCES PAGE ===== -->
+<div id="resources" class="page">
+  <section class="resources-hero">
+    <div class="faq-hero-tag">— Study Support</div>
+    <h1 class="faq-hero-title">Resources</h1>
+    <p class="faq-hero-sub">A curated collection of free and purchasable materials to support your study. Our own in-house resources are crafted by Rob and Sarah — designed to complement your NCEA, Cambridge, IB, or university coursework directly.</p>
+  </section>
+
+  <section class="resources-body">
+
+    <div class="resources-section-title">In-House Resources</div>
+    <div class="resources-section-sub">Created by Rob and Sarah Boasman — built to match the syllabus and designed to actually help.</div>
+    <div class="resources-grid">
+
+      <div class="resource-card">
+        <span class="resource-type rt-free">Free</span>
+        <div class="resource-title">HSC Physics — Formula Sheet</div>
+        <div class="resource-desc">A clean, syllabus-aligned formula reference for HSC Physics. Covers all modules with annotations on common exam applications.</div>
+        <div class="resource-link">Download PDF →</div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-free">Free</span>
+        <div class="resource-title">HSC Biology — Key Terms Glossary</div>
+        <div class="resource-desc">Comprehensive glossary of key biology terms for Year 11 & 12. Formatted for quick review and active recall practice.</div>
+        <div class="resource-link">Download PDF →</div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-paid">$12</span>
+        <div class="resource-title">Physics Worked Examples Pack</div>
+        <div class="resource-desc">40 fully worked exam-style problems across all HSC Physics modules. Includes step-by-step solutions and tutor notes on common mistakes.</div>
+        <div class="resource-price">$12.00</div>
+        <div class="resource-link">Purchase →</div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-paid">$12</span>
+        <div class="resource-title">Biology Exam Prep Guide</div>
+        <div class="resource-desc">A structured study guide for NCEA, Cambridge, and IB Biology covering module summaries, likely exam question types, and high-yield revision checklists.</div>
+        <div class="resource-price">$12.00</div>
+        <div class="resource-link">Purchase →</div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-paid">$18</span>
+        <div class="resource-title">Science Bundle (Physics + Biology)</div>
+        <div class="resource-desc">Both the Physics Worked Examples Pack and the Biology Exam Prep Guide together at a discounted bundle price.</div>
+        <div class="resource-price">$18.00 <span style="font-size:0.62rem;color:var(--muted)">save $6</span></div>
+        <div class="resource-link">Purchase Bundle →</div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-free">Free</span>
+        <div class="resource-title">How to Approach Exam Questions</div>
+        <div class="resource-desc">A short guide by Rob and Sarah on reading exam questions carefully, structuring responses, and avoiding common marks-losing mistakes.</div>
+        <div class="resource-link">Download PDF →</div>
+      </div>
+
+    </div>
+
+    <div class="resources-section-title">External Resources</div>
+    <div class="resources-section-sub">Carefully selected external tools and references we recommend to our students.</div>
+    <div class="resources-grid">
+
+      <div class="resource-card">
+        <span class="resource-type rt-external">External — Free</span>
+        <div class="resource-title">NZQA Past Exam Papers</div>
+        <div class="resource-desc">Official past NCEA exam papers and assessment schedules from NZQA. Essential for Physics and Biology exam preparation across all NCEA levels.</div>
+        <div class="resource-link"><a href="https://www.nzqa.govt.nz/ncea/assessment/search.do" target="_blank">Visit NZQA →</a></div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-external">External — Free</span>
+        <div class="resource-title">Khan Academy — Science</div>
+        <div class="resource-desc">High-quality free video lessons and practice exercises in physics and biology. Excellent for concept reinforcement between tutoring sessions.</div>
+        <div class="resource-link"><a href="https://www.khanacademy.org/science" target="_blank">Visit Khan Academy →</a></div>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-type rt-external">External — Free</span>
+        <div class="resource-title">PhET Interactive Simulations</div>
+        <div class="resource-desc">University of Colorado's free science simulations. Particularly useful for visualising physics concepts like forces, waves, and circuits — great for all NZ curricula.</div>
+        <div class="resource-link"><a href="https://phet.colorado.edu" target="_blank">Visit PhET →</a></div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-tutor-name" id="modal-tutor-name">Rob Boasman</div>
+        <div class="modal-subject" id="modal-subject">Physics Tutor</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="steps">
+      <div class="step active" id="step-1">1. Timeslot</div>
+      <div class="step" id="step-2">2. Details</div>
+      <div class="step" id="step-3">3. Confirm</div>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <!-- Populated by JS -->
+    </div>
+    <div class="modal-footer" id="modal-footer">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- PAGE NAV ----
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ---- MODAL STATE ----
+let state = { tutor: '', subject: '', cred: '', slot: null, name: '', email: '', level: '', people: '1', duration: '1' };
+let currentStep = 1;
+let startFromSubject = false; // true when opened from home pricing
+
+const TIMESLOTS = [
+  // Weekdays — 5:00 PM to 7:00 PM
+  { time: '5:00 PM', day: 'Mon', type: 'weekday' },
+  { time: '6:00 PM', day: 'Mon', type: 'weekday' },
+  { time: '5:00 PM', day: 'Tue', type: 'weekday' },
+  { time: '6:00 PM', day: 'Tue', type: 'weekday' },
+  { time: '5:00 PM', day: 'Wed', type: 'weekday' },
+  { time: '6:00 PM', day: 'Wed', type: 'weekday' },
+  { time: '5:00 PM', day: 'Thu', type: 'weekday' },
+  { time: '6:00 PM', day: 'Thu', type: 'weekday' },
+  { time: '5:00 PM', day: 'Fri', type: 'weekday' },
+  { time: '6:00 PM', day: 'Fri', type: 'weekday' },
+  // Saturday — 12:00 PM to 5:00 PM
+  { time: '12:00 PM', day: 'Sat', type: 'weekend' },
+  { time: '1:00 PM',  day: 'Sat', type: 'weekend' },
+  { time: '2:00 PM',  day: 'Sat', type: 'weekend' },
+  { time: '3:00 PM',  day: 'Sat', type: 'weekend' },
+  { time: '4:00 PM',  day: 'Sat', type: 'weekend' },
+  // Sunday — 12:00 PM to 5:00 PM
+  { time: '12:00 PM', day: 'Sun', type: 'weekend' },
+  { time: '1:00 PM',  day: 'Sun', type: 'weekend' },
+  { time: '2:00 PM',  day: 'Sun', type: 'weekend' },
+  { time: '3:00 PM',  day: 'Sun', type: 'weekend' },
+  { time: '4:00 PM',  day: 'Sun', type: 'weekend' },
+];
+
+// Called from home page pricing cards
+function openBookingFromHome(people, duration) {
+  startFromSubject = true;
+  state = { tutor: '', subject: '', cred: '', slot: null, name: '', email: '', level: '', people, duration };
+  currentStep = 0;
+  document.getElementById('modal-tutor-name').textContent = 'Book a Session';
+  document.getElementById('modal-subject').textContent = 'Select your subject to get started';
+  updateStepIndicators();
+  document.getElementById('modal').classList.add('open');
+  renderStep();
+}
+
+// Called from subject pages tutor card
+function openModal(tutor, subject, cred) {
+  startFromSubject = false;
+  state = { tutor, subject, cred, slot: null, name: '', email: '', level: '', people: '1', duration: '1' };
+  currentStep = 1;
+  document.getElementById('modal-tutor-name').textContent = tutor;
+  document.getElementById('modal-subject').textContent = subject + ' Tutor — ' + cred;
+  updateStepIndicators();
+  document.getElementById('modal').classList.add('open');
+  renderStep();
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function handleOverlayClick(e) { if (e.target === document.getElementById('modal')) closeModal(); }
+
+function updateStepIndicators() {
+  if (startFromSubject) {
+    document.getElementById('step-1').textContent = '1. Subject';
+    document.getElementById('step-2').textContent = '2. Timeslot';
+    document.getElementById('step-3').textContent = '3. Details';
+    // ensure step-4 exists or handle confirm in step 3 flow
+  } else {
+    document.getElementById('step-1').textContent = '1. Timeslot';
+    document.getElementById('step-2').textContent = '2. Details';
+    document.getElementById('step-3').textContent = '3. Confirm';
+  }
+}
+
+function setStep(n) {
+  currentStep = n;
+  if (startFromSubject) {
+    // steps are: 0=subject, 1=timeslot, 2=details, 3=confirm
+    // visual steps 1,2,3 map to our steps 0,1,2 with confirm being extra
+    const vis = n; // 0-indexed; step indicators are 1-indexed
+    [1,2,3].forEach(i => {
+      const el = document.getElementById('step-' + i);
+      if (i - 1 < vis) el.className = 'step done';
+      else if (i - 1 === vis) el.className = 'step active';
+      else el.className = 'step';
+    });
+  } else {
+    [1,2,3].forEach(i => {
+      const el = document.getElementById('step-' + i);
+      el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
+    });
+  }
+}
+
+const PHYSICS_LEVELS = [
+  'NCEA Level 1 Physics',
+  'NCEA Level 2 Physics',
+  'NCEA Level 3 Physics',
+  'Cambridge IGCSE Physics',
+  'Cambridge AS-Level Physics',
+  'Cambridge A-Level Physics',
+  'IB Physics SL',
+  'IB Physics HL',
+  'University Bridging / First Year',
+];
+const BIOLOGY_LEVELS = [
+  'NCEA Level 1 Biology',
+  'NCEA Level 2 Biology',
+  'NCEA Level 3 Biology',
+  'Cambridge IGCSE Biology',
+  'Cambridge AS-Level Biology',
+  'Cambridge A-Level Biology',
+  'IB Biology SL',
+  'IB Biology HL',
+  'University Bridging / First Year',
+  'Health Sciences First Year (HSFY) / Pre-Med',
+];
+
+function renderStep() {
+  setStep(currentStep);
+  const body = document.getElementById('modal-body');
+  const footer = document.getElementById('modal-footer');
+
+  // ---- STEP 0: Subject Select (from home) ----
+  if (startFromSubject && currentStep === 0) {
+    const pSelected = state.subject === 'Physics';
+    const bSelected = state.subject === 'Biology';
+    body.innerHTML = `
+      <p style="font-size:0.68rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.7">Which subject would you like tutoring in?</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.5rem">
+        <button onclick="selectSubject('Physics')" style="padding:1.8rem 1rem;border:2px solid ${pSelected?'var(--physics)':'var(--border)'};background:${pSelected?'rgba(26,58,92,0.06)':'transparent'};cursor:pointer;font-family:'DM Mono',monospace;transition:all 0.2s;text-align:left">
+          <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--physics);margin-bottom:0.5rem">Physics</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.4rem">Rob Boasman</div>
+          <div style="font-size:0.65rem;color:var(--muted)">NCEA · Cambridge · IB · University</div>
+        </button>
+        <button onclick="selectSubject('Biology')" style="padding:1.8rem 1rem;border:2px solid ${bSelected?'var(--biology)':'var(--border)'};background:${bSelected?'rgba(26,74,46,0.06)':'transparent'};cursor:pointer;font-family:'DM Mono',monospace;transition:all 0.2s;text-align:left">
+          <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--biology);margin-bottom:0.5rem">Biology</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.4rem">Sarah Boasman</div>
+          <div style="font-size:0.65rem;color:var(--muted)">NCEA · Cambridge · IB · Pre-Med</div>
+        </button>
+      </div>`;
+    footer.innerHTML = `
+      <button class="btn-sm btn-sm-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-sm btn-sm-primary" onclick="goFromSubject()" ${!state.subject ? 'disabled style="opacity:0.4;cursor:default"' : ''}>Next →</button>`;
+    return;
+  }
+
+  // ---- STEP 1: Timeslot ----
+  const isTimeslotStep = (!startFromSubject && currentStep === 1) || (startFromSubject && currentStep === 1);
+  if (isTimeslotStep) {
+    const weekdaySlots = TIMESLOTS.filter(s => s.type === 'weekday');
+    const weekendSlots = TIMESLOTS.filter(s => s.type === 'weekend');
+    const renderGroup = (slots) => slots.map((s, _) => {
+      const i = TIMESLOTS.indexOf(s);
+      return `<button class="time-slot${state.slot === i ? ' selected' : ''}" onclick="selectSlot(${i})">
+        ${s.time}<div class="time-day">${s.day}</div>
+      </button>`;
+    }).join('');
+    body.innerHTML = `
+      <p style="font-size:0.68rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.7">Available sessions this week. All times NZST.</p>
+      <div style="display:flex;gap:1.5rem;margin-bottom:1rem;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)">
+        <span>📅 Weekdays: 5:00 – 7:00 PM</span>
+        <span>☀️ Weekends: 12:00 – 5:00 PM</span>
+      </div>
+      <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">School Days</div>
+      <div class="time-grid" style="margin-bottom:1.2rem">${renderGroup(weekdaySlots)}</div>
+      <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem">Weekends</div>
+      <div class="time-grid">${renderGroup(weekendSlots)}</div>`;
+    footer.innerHTML = `
+      <button class="btn-sm btn-sm-outline" onclick="goBack()">← Back</button>
+      <button class="btn-sm btn-sm-primary" onclick="goToDetails()" ${state.slot === null ? 'disabled style="opacity:0.4;cursor:default"' : ''}>Next →</button>`;
+    return;
+  }
+
+  // ---- STEP 2: Details ----
+  const isDetailsStep = (!startFromSubject && currentStep === 2) || (startFromSubject && currentStep === 2);
+  if (isDetailsStep) {
+    const s = state;
+    const levels = s.subject === 'Physics' ? PHYSICS_LEVELS : BIOLOGY_LEVELS;
+    const levelOpts = levels.map(l => `<option value="${l}" ${s.level===l?'selected':''}>${l}</option>`).join('');
+    body.innerHTML = `
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input class="form-input" id="f-name" type="text" placeholder="Your full name" value="${s.name}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" id="f-email" type="email" placeholder="you@email.com" value="${s.email}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Level / Qualification</label>
+        <select class="form-select" id="f-level">
+          <option value="">Select your level…</option>
+          ${levelOpts}
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Number of Students</label>
+          <select class="form-select" id="f-people">
+            <option value="1" ${s.people==='1'?'selected':''}>1 student (Solo)</option>
+            <option value="2" ${s.people==='2'?'selected':''}>2 students (Pair)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Session Length</label>
+          <select class="form-select" id="f-duration">
+            <option value="1" ${s.duration==='1'?'selected':''}>1 hour</option>
+            <option value="2" ${s.duration==='2'?'selected':''}>2 hours</option>
+          </select>
+        </div>
+      </div>`;
+    footer.innerHTML = `
+      <button class="btn-sm btn-sm-outline" onclick="goBack()">← Back</button>
+      <button class="btn-sm btn-sm-primary" onclick="goToConfirm()">Review Booking →</button>`;
+    return;
+  }
+
+  // ---- STEP 3: Confirm ----
+  const isConfirmStep = (!startFromSubject && currentStep === 3) || (startFromSubject && currentStep === 3);
+  if (isConfirmStep) {
+    const s = state;
+    const slot = TIMESLOTS[s.slot];
+    const price = getPrice(s.people, s.duration);
+    body.innerHTML = `
+      <div class="confirm-price">${price}<span style="font-family:'DM Mono',monospace;font-size:0.9rem;color:var(--muted)"> NZD</span></div>
+      <div class="confirm-price-note" style="margin-bottom:1.5rem">Total — ${s.duration} hour${s.duration==='2'?'s':''} session${s.people === '2' ? ' (2 students)' : ''}</div>
+      <div class="confirm-box">
+        <div class="confirm-row"><span class="confirm-key">Tutor</span><span class="confirm-val">${s.tutor}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Subject</span><span class="confirm-val">${s.subject}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Level</span><span class="confirm-val">${s.level}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Timeslot</span><span class="confirm-val">${slot.day} ${slot.time} NZST</span></div>
+        <div class="confirm-row"><span class="confirm-key">Name</span><span class="confirm-val">${s.name}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Email</span><span class="confirm-val">${s.email}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Students</span><span class="confirm-val">${s.people === '2' ? '2 (Pair session)' : '1 (Solo session)'}</span></div>
+        <div class="confirm-row"><span class="confirm-key">Duration</span><span class="confirm-val">${s.duration} hour${s.duration==='2'?'s':''}</span></div>
+      </div>
+      <p style="font-size:0.67rem;color:var(--muted);line-height:1.8">A confirmation email will be sent to <strong>${s.email}</strong>. Payment is collected at the start of your session.</p>`;
+    footer.innerHTML = `
+      <button class="btn-sm btn-sm-outline" onclick="goBack()">← Back</button>
+      <button class="btn-sm btn-sm-primary" onclick="confirmBooking()">Confirm Booking ✓</button>`;
+  }
+}
+
+function selectSubject(subj) {
+  const tutor = subj === 'Physics' ? 'Rob Boasman' : 'Sarah Boasman';
+  state.subject = subj;
+  state.tutor = tutor;
+  state.cred = 'MEd Leadership';
+  document.getElementById('modal-tutor-name').textContent = tutor;
+  document.getElementById('modal-subject').textContent = subj + ' Tutor — MEd Leadership';
+  renderStep();
+}
+
+function goFromSubject() {
+  if (!state.subject) return;
+  currentStep = 1;
+  renderStep();
+}
+
+function selectSlot(i) {
+  state.slot = i;
+  renderStep();
+}
+
+function goToDetails() {
+  if (state.slot === null) return;
+  currentStep = 2;
+  renderStep();
+}
+
+function goToConfirm() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const level = document.getElementById('f-level').value;
+  const people = document.getElementById('f-people').value;
+  const duration = document.getElementById('f-duration').value;
+  if (!name || !email || !level) { alert('Please fill in all fields before continuing.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+  state = { ...state, name, email, level, people, duration };
+  currentStep = 3;
+  renderStep();
+}
+
+function goBack() {
+  if (startFromSubject && currentStep === 1) { currentStep = 0; }
+  else { currentStep--; }
+  renderStep();
+}
+
+function getPrice(people, duration) {
+  const map = { '1-1': '$100', '1-2': '$150', '2-1': '$140', '2-2': '$200' };
+  return map[people + '-' + duration];
+}
+
+function confirmBooking() {
+  const body = document.getElementById('modal-body');
+  const footer = document.getElementById('modal-footer');
+  document.querySelectorAll('.steps .step').forEach(s => s.className = 'step done');
+  footer.innerHTML = '';
+  body.innerHTML = `
+    <div class="success-state">
+      <div class="success-icon">✓</div>
+      <div class="success-title">You're all booked.</div>
+      <div class="success-sub">
+        A confirmation has been sent to <strong>${state.email}</strong>.<br><br>
+        Your session with <strong>${state.tutor}</strong> is confirmed for<br>
+        <strong>${TIMESLOTS[state.slot].day} at ${TIMESLOTS[state.slot].time} AEST</strong>.<br><br>
+        We look forward to seeing you. Payment is collected at the start of the session.
+      </div>
+      <button class="btn btn-primary" style="margin-top:2rem" onclick="closeModal()">Done</button>
+    </div>`;
+}
+
+// ===== STUDY BUDDIES TOGGLE =====
+function toggleBuddies() {
+  const content = document.getElementById('buddies-content');
+  const trigger = document.getElementById('buddies-trigger');
+  content.classList.toggle('open');
+  const label = trigger.querySelector('.buddies-trigger-label');
+  label.textContent = content.classList.contains('open')
+    ? 'Hide our study buddies'
+    : 'Psst — meet our study buddies';
+}
+
+// ===== TESLA BALL ANIMATION =====
+(function() {
+  const canvas = document.getElementById('tesla-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let bolts = [];
+  let t = 0;
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+
+  function randomBetween(a, b) { return a + Math.random() * (b - a); }
+
+  function generateBolt(cx, cy, angle, length, depth) {
+    if (depth <= 0 || length < 4) return [];
+    const pts = [{ x: cx, y: cy }];
+    let x = cx, y = cy;
+    const segments = Math.floor(randomBetween(4, 8));
+    for (let i = 0; i < segments; i++) {
+      const frac = (i + 1) / segments;
+      const tx = cx + Math.cos(angle) * length * frac;
+      const ty = cy + Math.sin(angle) * length * frac;
+      const perp = angle + Math.PI / 2;
+      const jitter = randomBetween(-length * 0.22, length * 0.22);
+      x = tx + Math.cos(perp) * jitter;
+      y = ty + Math.sin(perp) * jitter;
+      pts.push({ x, y });
+    }
+    let lines = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      lines.push({ x1: pts[i].x, y1: pts[i].y, x2: pts[i+1].x, y2: pts[i+1].y, depth });
+    }
+    // branch
+    if (depth > 1 && Math.random() < 0.45) {
+      const branchPt = pts[Math.floor(randomBetween(1, pts.length - 1))];
+      const branchAngle = angle + randomBetween(0.4, 1.1) * (Math.random() < 0.5 ? 1 : -1);
+      lines = lines.concat(generateBolt(branchPt.x, branchPt.y, branchAngle, length * 0.55, depth - 1));
+    }
+    return lines;
+  }
+
+  function spawnBolts() {
+    bolts = [];
+    const w = canvas.width, h = canvas.height;
+    const cx = w * 0.5, cy = h * 0.5;
+    const r = Math.min(w, h) * 0.14;
+    const numBolts = Math.floor(randomBetween(3, 6));
+    for (let i = 0; i < numBolts; i++) {
+      const startAngle = randomBetween(0, Math.PI * 2);
+      const sx = cx + Math.cos(startAngle) * r;
+      const sy = cy + Math.sin(startAngle) * r;
+      const outAngle = startAngle + randomBetween(-0.5, 0.5);
+      bolts.push({
+        lines: generateBolt(sx, sy, outAngle, randomBetween(w * 0.25, w * 0.45), 3),
+        alpha: 1,
+        life: 1
+      });
+    }
+  }
+
+  let boltTimer = 0;
+  function draw() {
+    resize();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const w = canvas.width, h = canvas.height;
+    const cx = w * 0.5, cy = h * 0.5;
+    const r = Math.min(w, h) * 0.14;
+
+    // orb glow
+    const grd = ctx.createRadialGradient(cx, cy, r * 0.2, cx, cy, r * 1.6);
+    grd.addColorStop(0, 'rgba(180, 210, 255, 0.55)');
+    grd.addColorStop(0.4, 'rgba(120, 170, 255, 0.2)');
+    grd.addColorStop(1, 'rgba(80, 130, 255, 0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // orb core
+    const orbGrd = ctx.createRadialGradient(cx - r * 0.25, cy - r * 0.25, r * 0.05, cx, cy, r);
+    orbGrd.addColorStop(0, 'rgba(230, 240, 255, 0.9)');
+    orbGrd.addColorStop(0.5, 'rgba(150, 190, 255, 0.7)');
+    orbGrd.addColorStop(1, 'rgba(60, 100, 200, 0.5)');
+    ctx.fillStyle = orbGrd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // bolts
+    boltTimer++;
+    if (boltTimer > 18) { spawnBolts(); boltTimer = 0; }
+
+    bolts.forEach(bolt => {
+      bolt.life -= 0.045;
+      bolt.alpha = Math.max(0, bolt.life);
+      bolt.lines.forEach(l => {
+        const depthAlpha = l.depth / 3;
+        ctx.save();
+        ctx.globalAlpha = bolt.alpha * depthAlpha * 0.9;
+        ctx.strokeStyle = `rgba(180, 220, 255, 1)`;
+        ctx.shadowColor = 'rgba(140, 200, 255, 0.8)';
+        ctx.shadowBlur = 6 * depthAlpha;
+        ctx.lineWidth = l.depth * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(l.x1, l.y1);
+        ctx.lineTo(l.x2, l.y2);
+        ctx.stroke();
+        ctx.restore();
+      });
+    });
+    bolts = bolts.filter(b => b.alpha > 0);
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  spawnBolts();
+  draw();
+})();
+
+// ===== DNA STRAND ANIMATION =====
+(function() {
+  const canvas = document.getElementById('dna-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  function draw() {
+    const w = canvas.offsetWidth;
+    const h = canvas.offsetHeight;
+    canvas.width = w;
+    canvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const amplitude = Math.min(w * 0.22, 55);
+    const freq = (Math.PI * 2) / (h * 0.38);
+    const speed = t * 0.018;
+    const steps = Math.ceil(h / 3);
+    const baseR = 3.5;
+
+    // Draw back rung segments first (behind strands)
+    for (let i = 0; i <= steps; i++) {
+      const y = (i / steps) * h;
+      const phase = y * freq + speed;
+      const x1 = cx + Math.sin(phase) * amplitude;
+      const x2 = cx + Math.sin(phase + Math.PI) * amplitude;
+      const depth = Math.sin(phase); // -1 to 1
+      if (depth < 0) { // back rungs
+        const alpha = (Math.abs(depth) * 0.35);
+        if (i % 14 === 0) {
+          ctx.beginPath();
+          ctx.moveTo(x1, y); ctx.lineTo(x2, y);
+          ctx.strokeStyle = `rgba(26, 74, 46, ${alpha})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Strand 1
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const y = (i / steps) * h;
+      const x = cx + Math.sin(y * freq + speed) * amplitude;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(26, 74, 46, 0.7)';
+    ctx.lineWidth = 2.5;
+    ctx.shadowColor = 'rgba(26, 74, 46, 0.3)';
+    ctx.shadowBlur = 4;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Strand 2
+    ctx.beginPath();
+    for (let i = 0; i <= steps; i++) {
+      const y = (i / steps) * h;
+      const x = cx + Math.sin(y * freq + speed + Math.PI) * amplitude;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(100, 160, 80, 0.6)';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Front rungs + base pair dots
+    for (let i = 0; i <= steps; i++) {
+      const y = (i / steps) * h;
+      const phase = y * freq + speed;
+      const x1 = cx + Math.sin(phase) * amplitude;
+      const x2 = cx + Math.sin(phase + Math.PI) * amplitude;
+      const depth = Math.sin(phase);
+      if (depth >= 0 && i % 14 === 0) {
+        const alpha = 0.25 + depth * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(x1, y); ctx.lineTo(x2, y);
+        ctx.strokeStyle = `rgba(26, 74, 46, ${alpha})`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        const colors = ['rgba(180,80,80,', 'rgba(80,120,200,', 'rgba(200,160,40,', 'rgba(60,160,90,'];
+        const ci = (Math.floor(i / 14)) % 4;
+        [x1, x2].forEach(x => {
+          ctx.beginPath();
+          ctx.arc(x, y, baseR * (0.6 + depth * 0.4), 0, Math.PI * 2);
+          ctx.fillStyle = colors[ci] + (alpha * 0.9) + ')';
+          ctx.fill();
+        });
+      }
+    }
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
