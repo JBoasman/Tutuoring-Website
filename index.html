@@ -7,6 +7,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+
+  :root {
+    --engineering: #4a2c6e;
+    --maths: #7a3020;
+  }
+  .engineering-tag { color: var(--engineering); }
+  .maths-tag { color: var(--maths); }
+  .engineering-avatar { background: rgba(74,44,110,0.1); color: var(--engineering); }
+  .maths-avatar { background: rgba(122,48,32,0.1); color: var(--maths); }
+  .lesson-coming-soon {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.2rem; border: 1px solid var(--border);
+    opacity: 0.55;
+  }
+  .lesson-coming-soon-badge {
+    font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase;
+    background: rgba(201,168,76,0.15); color: #7a6020; padding: 0.15rem 0.6rem;
+  }
+
   :root {
     --ink: #0f0e0c;
     --paper: #e8e3d9;
@@ -768,6 +787,8 @@
     <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
     <a onclick="showPage('physics')" id="nav-physics">Physics</a>
     <a onclick="showPage('biology')" id="nav-biology">Biology</a>
+    <a onclick="showPage('maths')" id="nav-maths">Maths</a>
+    <a onclick="showPage('engineering')" id="nav-engineering">Engineering</a>
     <a onclick="showPage('resources')" id="nav-resources">Resources</a>
     <div class="nav-dropdown" id="nav-dropdown-wrapper">
       <a id="nav-other" onclick="toggleDropdown(event)" style="display:flex;align-items:center;gap:0.3rem">Other <span id="nav-other-arrow" style="font-size:0.6rem;transition:transform 0.2s;display:inline-block">▾</span></a>
@@ -788,32 +809,52 @@
     <div class="hero-left">
       <div class="hero-tag">— Boasman Family Tutoring</div>
       <h1 class="hero-title">
-        Master the<br><em>science</em><br>that shapes<br>your world.
+        Master the<br><em>subjects</em><br>that shape<br>your world.
       </h1>
       <p class="hero-desc">
-        Boasman Tutoring is a family-owned service built on a simple belief: every student deserves a teacher who genuinely cares. Rob and Sarah Boasman are experienced, accredited educators — each holding a Master of Educational Leadership — who bring professional classroom expertise directly to your learning. Whether you're working through NCEA, Cambridge, IB, or preparing for university, you're in expert hands.
+        Boasman Tutoring is a family-owned service built on a simple belief: every student deserves a teacher who genuinely cares. Rob, Sarah, and Sam Boasman are experienced educators who bring professional expertise directly to your learning across Physics, Biology, Mathematics, and Engineering. Whether you're working through NCEA, Cambridge, IB, or preparing for university, you're in expert hands.
       </p>
       <div class="btn-group">
-        <button class="btn btn-primary" onclick="showPage('physics')">Explore Physics</button>
-        <button class="btn btn-outline" onclick="showPage('biology')">Explore Biology</button>
+        <button class="btn btn-primary" onclick="showPage('physics')">Physics</button>
+        <button class="btn btn-outline" onclick="showPage('biology')">Biology</button>
+        <button class="btn btn-outline" onclick="showPage('maths')">Maths</button>
+        <button class="btn btn-outline" onclick="showPage('engineering')">Engineering</button>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-card" onclick="showPage('physics')">
+    <div class="hero-right" style="grid-template-rows:1fr 1fr;grid-template-columns:1fr 1fr;display:grid">
+      <div class="hero-card" onclick="showPage('physics')" style="border-bottom:1px solid var(--border);border-right:1px solid var(--border)">
         <canvas class="hero-card-canvas" id="tesla-canvas"></canvas>
         <div style="position:relative;z-index:1">
-          <div class="card-tag">— Physics Tutoring</div>
-          <div class="card-title">From mechanics<br>to quantum theory.</div>
-          <div class="card-desc">Structured programs for Year 10 through first-year university. Clear, rigorous, and designed around how you actually learn.</div>
+          <div class="card-tag">— Physics</div>
+          <div class="card-title" style="font-size:1.6rem">From mechanics<br>to quantum theory.</div>
+          <div class="card-desc">NCEA · Cambridge · IB · University</div>
         </div>
         <div class="card-arrow" style="position:relative;z-index:1">→</div>
       </div>
-      <div class="hero-card" onclick="showPage('biology')">
+      <div class="hero-card" onclick="showPage('biology')" style="border-bottom:1px solid var(--border)">
         <canvas class="hero-card-canvas" id="dna-canvas"></canvas>
         <div style="position:relative;z-index:1">
-          <div class="card-tag">— Biology Tutoring</div>
-          <div class="card-title">Life science,<br>deeply understood.</div>
-          <div class="card-desc">Cellular biology, genetics, ecology, and human physiology — covered with the depth your exams demand and your curiosity deserves.</div>
+          <div class="card-tag">— Biology</div>
+          <div class="card-title" style="font-size:1.6rem">Life science,<br>deeply understood.</div>
+          <div class="card-desc">NCEA · Cambridge · IB · Pre-Med</div>
+        </div>
+        <div class="card-arrow" style="position:relative;z-index:1">→</div>
+      </div>
+      <div class="hero-card" onclick="showPage('maths')" style="border-right:1px solid var(--border)">
+        <canvas class="hero-card-canvas" id="sine-canvas"></canvas>
+        <div style="position:relative;z-index:1">
+          <div class="card-tag">— Mathematics</div>
+          <div class="card-title" style="font-size:1.6rem">Numbers made<br>to make sense.</div>
+          <div class="card-desc">NCEA · Cambridge · IB · University</div>
+        </div>
+        <div class="card-arrow" style="position:relative;z-index:1">→</div>
+      </div>
+      <div class="hero-card" onclick="showPage('engineering')">
+        <canvas class="hero-card-canvas" id="matrix-canvas"></canvas>
+        <div style="position:relative;z-index:1">
+          <div class="card-tag">— Engineering</div>
+          <div class="card-title" style="font-size:1.6rem">Build the future<br>from first principles.</div>
+          <div class="card-desc">Bridging · Year 1–4 · Software Focus</div>
         </div>
         <div class="card-arrow" style="position:relative;z-index:1">→</div>
       </div>
@@ -880,18 +921,24 @@
       <div class="section-label">— Meet the Tutors</div>
       <h2 class="section-title">Professional teachers.<br>Personal attention.</h2>
     </div>
-    <div class="tutors-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 780px;">
+    <div class="tutors-grid" style="grid-template-columns: repeat(3, 1fr);">
       <div class="tutor-card-home">
         <div class="tutor-initial" style="background:rgba(26,58,92,0.1);color:var(--physics)">R</div>
         <div class="tutor-name-h">Rob Boasman</div>
         <div class="tutor-role-h">Physics — MEd Leadership</div>
-        <div class="tutor-bio-h">Rob is an experienced classroom teacher holding a Master of Educational Leadership. With years of senior physics teaching across NCEA, Cambridge, and IB programmes, he brings professional rigour and genuine care to every tutoring session — helping students build both the conceptual understanding and exam technique they need to succeed.</div>
+        <div class="tutor-bio-h">Rob is an experienced classroom teacher holding a Master of Educational Leadership. With years of senior physics teaching across NCEA, Cambridge, and IB programmes, he brings professional rigour and genuine care to every tutoring session.</div>
       </div>
       <div class="tutor-card-home">
         <div class="tutor-initial" style="background:rgba(26,74,46,0.1);color:var(--biology)">S</div>
         <div class="tutor-name-h">Sarah Boasman</div>
         <div class="tutor-role-h">Biology — MEd Leadership</div>
-        <div class="tutor-bio-h">Sarah is a qualified and experienced biology teacher with a Master of Educational Leadership. She teaches across NCEA, Cambridge, and IB pathways and has a gift for making complex biological concepts genuinely accessible — including pre-med preparation for students heading into Health Sciences First Year programmes.</div>
+        <div class="tutor-bio-h">Sarah is a qualified and experienced biology teacher with a Master of Educational Leadership. She teaches across NCEA, Cambridge, and IB pathways, with specialist expertise in pre-med preparation for Health Sciences First Year programmes.</div>
+      </div>
+      <div class="tutor-card-home">
+        <div class="tutor-initial" style="background:rgba(74,44,110,0.1);color:var(--engineering)">S</div>
+        <div class="tutor-name-h">Sam Boasman</div>
+        <div class="tutor-role-h">Engineering & Maths — MSc AI (in progress)</div>
+        <div class="tutor-bio-h">Sam is a software engineer currently completing a Master's degree in Artificial Intelligence. He brings industry experience and academic depth to engineering and mathematics tutoring — from high school foundations through to university-level software engineering.</div>
       </div>
     </div>
   </section>
@@ -1274,6 +1321,163 @@
 
 </div>
 
+<!-- ===== MATHS PAGE ===== -->
+<div id="maths" class="page">
+  <section class="subj-hero">
+    <div>
+      <div class="subj-tag maths-tag">— Mathematics Tutoring</div>
+      <h1 class="subj-title" style="color:var(--maths)">Mathematics,<br>demystified.</h1>
+    </div>
+    <div class="subj-desc">
+      From algebraic foundations through to university calculus and statistics, Sam Boasman makes mathematics click. Whether you're building confidence at NCEA Level 1 or tackling first-year university content, sessions are structured around your current level and your goals.
+      <br><br>
+      Sam brings a software engineer's precise, systematic approach to mathematics — showing you not just how to solve problems, but why the methods work.
+    </div>
+  </section>
+
+  <section class="blurb-section">
+    <div class="blurb-inner">
+      <p class="blurb-text">
+        "Mathematics is not about memorising formulas — it's about developing a way of thinking. Master the reasoning and the formulas look after themselves."
+      </p>
+      <p class="blurb-detail">
+        Sam's mathematics tutoring covers all high school levels (NCEA 1–3, Cambridge IGCSE and A-Level, IB SL and HL), university bridging programmes, and first-year university mathematics including calculus, linear algebra, and statistics. Sessions can focus on concept-building, worked examples, exam technique, or all three.
+      </p>
+    </div>
+  </section>
+
+  <section class="topics-row">
+    <div class="topic-chip">Number & Algebra</div>
+    <div class="topic-chip">Geometry & Trigonometry</div>
+    <div class="topic-chip">Statistics & Probability</div>
+    <div class="topic-chip">Calculus (Differentiation)</div>
+    <div class="topic-chip">Calculus (Integration)</div>
+    <div class="topic-chip">Linear Algebra</div>
+    <div class="topic-chip">Sequences & Series</div>
+    <div class="topic-chip">Complex Numbers</div>
+    <div class="topic-chip">Differential Equations</div>
+    <div class="topic-chip">Discrete Maths</div>
+    <div class="topic-chip">IB Mathematical Studies</div>
+    <div class="topic-chip">NCEA Achievement Standards</div>
+  </section>
+
+  <section class="tutors-booking">
+    <div class="tutors-booking-title">Book a session with Sam</div>
+    <div class="tutors-booking-sub">Send an enquiry and Sam will be in touch to confirm a time.</div>
+    <div class="tutors-cards" style="grid-template-columns: repeat(1, minmax(0, 340px));">
+      <div class="tutor-card" onclick="openModal('Sam Boasman', 'Mathematics', 'MSc AI (in progress)')">
+        <div class="tutor-avatar maths-avatar">S</div>
+        <div class="tutor-name">Sam Boasman</div>
+        <div class="tutor-cred">Software Engineer · MSc AI (in progress)</div>
+        <div class="tutor-spec">All high school levels, Cambridge, IB, university bridging, and first-year university mathematics.</div>
+        <button class="tutor-book-btn">Enquire →</button>
+      </div>
+    </div>
+  </section>
+  <section class="study-buddies">
+    <div class="buddies-trigger" onclick="toggleBuddies('maths')" id="buddies-trigger-maths">
+      <span class="buddies-paw">🐾</span>
+      <span class="buddies-trigger-label" id="buddies-label-maths">Psst — meet our study buddies</span>
+      <span class="buddies-paw" style="animation-delay:0.4s">🐾</span>
+    </div>
+    <div class="buddies-content" id="buddies-content-maths">
+      <div style="text-align:center;margin-bottom:0.5rem">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:0.4rem">Study Buddies</div>
+        <div style="font-size:0.68rem;color:var(--muted)">The unofficial mascots of Boasman Tutoring. They supervise every session. Mostly.</div>
+      </div>
+      <div class="buddies-inner">
+        <div class="buddy-card">
+          <img class="buddy-photo" src="charlie.png" alt="Charlie the dog">
+          <div class="buddy-info"><div class="buddy-name">Charlie</div><div class="buddy-role">Chief Ball Officer · Physics Consultant</div><div class="buddy-bio">Charlie is the brains of the operation. Highly intelligent, deeply analytical, and absolutely obsessed with playing ball. Probably understands projectile motion better than most Year 12 students.</div><span class="buddy-tag">🎾 Ball Enthusiast</span></div>
+        </div>
+        <div class="buddy-card">
+          <img class="buddy-photo" src="alphie.png" alt="Alphie the dog in a red jumper">
+          <div class="buddy-info"><div class="buddy-name">Alphie</div><div class="buddy-role">Director of Noise · Biology Consultant</div><div class="buddy-bio">Alphie is a very good boy. What he lacks in brain cells he makes up for in enthusiasm, volume, and a complete disregard for indoor voices. We love him unconditionally.</div><span class="buddy-tag">📢 Loud & Proud</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== ENGINEERING PAGE ===== -->
+<div id="engineering" class="page">
+  <section class="subj-hero">
+    <div>
+      <div class="subj-tag engineering-tag">— Engineering Tutoring</div>
+      <h1 class="subj-title" style="color:var(--engineering)">Engineering,<br>built from<br>first principles.</h1>
+    </div>
+    <div class="subj-desc">
+      Sam Boasman is a software engineer completing a Master's in Artificial Intelligence who tutors across general engineering foundations and software-specific university content. Whether you're bridging into first-year engineering or working through advanced software papers, Sam brings real industry experience to every session.
+      <br><br>
+      Sessions cover general engineering fundamentals for first-year students as well as software engineering content for Years 2–4 — including algorithms, data structures, systems, and AI/ML foundations.
+    </div>
+  </section>
+
+  <section class="blurb-section">
+    <div class="blurb-inner">
+      <p class="blurb-text">
+        "The best engineers aren't just good at writing code — they understand the principles behind it. We build that understanding from the ground up."
+      </p>
+      <p class="blurb-detail">
+        Sam's engineering tutoring covers university bridging content, first-year general engineering (across all disciplines), and software engineering from Year 2 through to Year 4. Topics include programming foundations, algorithms and data structures, systems architecture, software design patterns, and introductory AI and machine learning concepts.
+      </p>
+    </div>
+  </section>
+
+  <section class="topics-row">
+    <div class="topic-chip">Engineering Maths</div>
+    <div class="topic-chip">Programming Foundations</div>
+    <div class="topic-chip">Algorithms & Data Structures</div>
+    <div class="topic-chip">Object-Oriented Design</div>
+    <div class="topic-chip">Systems Architecture</div>
+    <div class="topic-chip">Databases & SQL</div>
+    <div class="topic-chip">Software Design Patterns</div>
+    <div class="topic-chip">Web Development</div>
+    <div class="topic-chip">Machine Learning Foundations</div>
+    <div class="topic-chip">AI Concepts & Applications</div>
+    <div class="topic-chip">Version Control & Git</div>
+    <div class="topic-chip">Engineering Problem Solving</div>
+  </section>
+
+  <section class="tutors-booking">
+    <div class="tutors-booking-title">Book a session with Sam</div>
+    <div class="tutors-booking-sub">Send an enquiry and Sam will be in touch to confirm a time.</div>
+    <div class="tutors-cards" style="grid-template-columns: repeat(1, minmax(0, 340px));">
+      <div class="tutor-card" onclick="openModal('Sam Boasman', 'Engineering', 'MSc AI (in progress)')">
+        <div class="tutor-avatar engineering-avatar">S</div>
+        <div class="tutor-name">Sam Boasman</div>
+        <div class="tutor-cred">Software Engineer · MSc AI (in progress)</div>
+        <div class="tutor-spec">General engineering (Year 1), software engineering (Years 2–4), AI & ML foundations. Industry experience and academic depth.</div>
+        <button class="tutor-book-btn">Enquire →</button>
+      </div>
+    </div>
+  </section>
+  <section class="study-buddies">
+    <div class="buddies-trigger" onclick="toggleBuddies('engineering')" id="buddies-trigger-engineering">
+      <span class="buddies-paw">🐾</span>
+      <span class="buddies-trigger-label" id="buddies-label-engineering">Psst — meet our study buddies</span>
+      <span class="buddies-paw" style="animation-delay:0.4s">🐾</span>
+    </div>
+    <div class="buddies-content" id="buddies-content-engineering">
+      <div style="text-align:center;margin-bottom:0.5rem">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;margin-bottom:0.4rem">Study Buddies</div>
+        <div style="font-size:0.68rem;color:var(--muted)">The unofficial mascots of Boasman Tutoring. They supervise every session. Mostly.</div>
+      </div>
+      <div class="buddies-inner">
+        <div class="buddy-card">
+          <img class="buddy-photo" src="charlie.png" alt="Charlie the dog">
+          <div class="buddy-info"><div class="buddy-name">Charlie</div><div class="buddy-role">Chief Ball Officer · Physics Consultant</div><div class="buddy-bio">Charlie is the brains of the operation. Highly intelligent, deeply analytical, and absolutely obsessed with playing ball. Probably understands projectile motion better than most Year 12 students.</div><span class="buddy-tag">🎾 Ball Enthusiast</span></div>
+        </div>
+        <div class="buddy-card">
+          <img class="buddy-photo" src="alphie.png" alt="Alphie the dog in a red jumper">
+          <div class="buddy-info"><div class="buddy-name">Alphie</div><div class="buddy-role">Director of Noise · Biology Consultant</div><div class="buddy-bio">Alphie is a very good boy. What he lacks in brain cells he makes up for in enthusiasm, volume, and a complete disregard for indoor voices. We love him unconditionally.</div><span class="buddy-tag">📢 Loud & Proud</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
 <!-- ===== RESOURCES PAGE ===== -->
 <div id="resources" class="page">
   <section class="resources-hero">
@@ -1292,14 +1496,14 @@
         <span class="resource-type rt-free">Free</span>
         <div class="resource-title">HSC Physics — Formula Sheet</div>
         <div class="resource-desc">A clean, syllabus-aligned formula reference for HSC Physics. Covers all modules with annotations on common exam applications.</div>
-        <div class="resource-link">Download PDF →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
       <div class="resource-card">
         <span class="resource-type rt-free">Free</span>
         <div class="resource-title">HSC Biology — Key Terms Glossary</div>
         <div class="resource-desc">Comprehensive glossary of key biology terms for Year 11 & 12. Formatted for quick review and active recall practice.</div>
-        <div class="resource-link">Download PDF →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
       <div class="resource-card">
@@ -1307,7 +1511,7 @@
         <div class="resource-title">Physics Worked Examples Pack</div>
         <div class="resource-desc">40 fully worked exam-style problems across all HSC Physics modules. Includes step-by-step solutions and tutor notes on common mistakes.</div>
         <div class="resource-price">$12.00</div>
-        <div class="resource-link">Purchase →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
       <div class="resource-card">
@@ -1315,7 +1519,7 @@
         <div class="resource-title">Biology Exam Prep Guide</div>
         <div class="resource-desc">A structured study guide for NCEA, Cambridge, and IB Biology covering module summaries, likely exam question types, and high-yield revision checklists.</div>
         <div class="resource-price">$12.00</div>
-        <div class="resource-link">Purchase →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
       <div class="resource-card">
@@ -1323,14 +1527,14 @@
         <div class="resource-title">Science Bundle (Physics + Biology)</div>
         <div class="resource-desc">Both the Physics Worked Examples Pack and the Biology Exam Prep Guide together at a discounted bundle price.</div>
         <div class="resource-price">$18.00 <span style="font-size:0.62rem;color:var(--muted)">save $6</span></div>
-        <div class="resource-link">Purchase Bundle →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
       <div class="resource-card">
         <span class="resource-type rt-free">Free</span>
         <div class="resource-title">How to Approach Exam Questions</div>
         <div class="resource-desc">A short guide by Rob and Sarah on reading exam questions carefully, structuring responses, and avoiding common marks-losing mistakes.</div>
-        <div class="resource-link">Download PDF →</div>
+        <div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.5rem">Coming Soon</div>
       </div>
 
     </div>
@@ -1834,25 +2038,18 @@ function openCourse(courseId) {
   body.innerHTML = `
     <div class="lesson-list">
       ${course.lessons.map((lesson, i) => {
-        const accessible = lesson.free || isUnlocked;
         return `
-          <div class="lesson-row ${accessible ? 'free' : 'locked'}"
-               ${accessible ? `onclick="openLesson('${courseId}', ${i})"` : `onclick="promptPassword('${courseId}', ${i})"`}>
+          <div class="lesson-coming-soon">
             <div class="lesson-row-left">
               <span class="lesson-num">${String(i + 1).padStart(2, '0')}</span>
               <span class="lesson-name-text">${lesson.title}</span>
-              <span class="${lesson.free ? 'lesson-badge-free' : 'lesson-badge-paid'}">${lesson.free ? 'Free' : 'Paid'}</span>
-            </div>
-            <div>
-              ${accessible
-                ? `<button class="lesson-play-btn">Watch ▶</button>`
-                : `<button class="lesson-play-btn" style="color:var(--muted)">Unlock 🔒</button>`}
+              <span class="lesson-coming-soon-badge">Coming Soon</span>
             </div>
           </div>`;
       }).join('')}
     </div>
     ${!isUnlocked ? `<p style="font-size:0.64rem;color:var(--muted);margin-top:1.5rem;line-height:1.8">
-      Paid lessons are password protected. <a href="#" onclick="window.location.href='mai'+'lto:nzsciencetutoring@gmail.com'" style="color:var(--gold);text-decoration:none">Contact us</a> to purchase access and receive your course password.
+      Lessons are currently being recorded and will be available soon. <a href="mailto:nzsciencetutoring@gmail.com" style="color:var(--gold);text-decoration:none">Contact us</a> to be notified when they go live.
     </p>` : ''}`;
 
   document.getElementById('course-modal').classList.add('open');
@@ -2083,6 +2280,26 @@ const PHYSICS_LEVELS = [
   'Cambridge IGCSE Physics', 'Cambridge AS-Level Physics', 'Cambridge A-Level Physics',
   'IB Physics SL', 'IB Physics HL', 'University Bridging / First Year',
 ];
+const MATHS_LEVELS = [
+  'NCEA Level 1 Mathematics',
+  'NCEA Level 2 Mathematics',
+  'NCEA Level 3 Mathematics (Calculus)',
+  'NCEA Level 3 Mathematics (Statistics)',
+  'Cambridge IGCSE Mathematics',
+  'Cambridge AS/A-Level Mathematics',
+  'IB Mathematics SL',
+  'IB Mathematics HL',
+  'University Bridging / Foundation',
+  'First Year University Mathematics',
+];
+const ENGINEERING_LEVELS = [
+  'University Bridging / Engineering Foundation',
+  'First Year General Engineering',
+  'Second Year Software Engineering',
+  'Third Year Software Engineering',
+  'Fourth Year Software Engineering',
+  'AI & Machine Learning (any year)',
+];
 const BIOLOGY_LEVELS = [
   'NCEA Level 1 Biology', 'NCEA Level 2 Biology', 'NCEA Level 3 Biology',
   'Cambridge IGCSE Biology', 'Cambridge AS-Level Biology', 'Cambridge A-Level Biology',
@@ -2156,6 +2373,16 @@ function renderStep() {
           <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.4rem">Sarah Boasman</div>
           <div style="font-size:0.65rem;color:var(--muted)">NCEA · Cambridge · IB · Pre-Med</div>
         </button>
+        <button onclick="selectSubject('Mathematics')" style="padding:1.8rem 1rem;border:2px solid ${state.subject==='Mathematics'?'var(--maths)':'var(--border)'};background:${state.subject==='Mathematics'?'rgba(122,48,32,0.06)':'transparent'};cursor:pointer;font-family:'DM Mono',monospace;transition:all 0.2s;text-align:left">
+          <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--maths);margin-bottom:0.5rem">Mathematics</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.4rem">Sam Boasman</div>
+          <div style="font-size:0.65rem;color:var(--muted)">NCEA · Cambridge · IB · University</div>
+        </button>
+        <button onclick="selectSubject('Engineering')" style="padding:1.8rem 1rem;border:2px solid ${state.subject==='Engineering'?'var(--engineering)':'var(--border)'};background:${state.subject==='Engineering'?'rgba(74,44,110,0.06)':'transparent'};cursor:pointer;font-family:'DM Mono',monospace;transition:all 0.2s;text-align:left">
+          <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--engineering);margin-bottom:0.5rem">Engineering</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--ink);margin-bottom:0.4rem">Sam Boasman</div>
+          <div style="font-size:0.65rem;color:var(--muted)">Bridging · Years 1–4 · Software & AI</div>
+        </button>
       </div>`;
     footer.innerHTML = `
       <button class="btn-sm btn-sm-outline" onclick="closeModal()">Cancel</button>
@@ -2166,7 +2393,8 @@ function renderStep() {
   // ── STEP 1: Availability info + form ──
   if (currentStep === 1) {
     const s = state;
-    const levels = s.subject === 'Physics' ? PHYSICS_LEVELS : BIOLOGY_LEVELS;
+    const levelsMap = { Physics: PHYSICS_LEVELS, Biology: BIOLOGY_LEVELS, Mathematics: MATHS_LEVELS, Engineering: ENGINEERING_LEVELS };
+    const levels = levelsMap[s.subject] || PHYSICS_LEVELS;
     const levelOpts = levels.map(l => `<option value="${l}" ${s.level===l?'selected':''}>${l}</option>`).join('');
     body.innerHTML = `
       <div style="background:rgba(26,58,92,0.04);border:1px solid var(--border);padding:1.2rem 1.4rem;margin-bottom:1.6rem">
@@ -2248,9 +2476,11 @@ function renderStep() {
 }
 
 function selectSubject(subj) {
-  state.subject = subj === 'Physics' ? 'Physics' : 'Biology';
-  state.tutor = subj === 'Physics' ? 'Rob Boasman' : 'Sarah Boasman';
-  state.cred = 'MEd Leadership';
+  state.subject = subj;
+  const tutorMap = { Physics: 'Rob Boasman', Biology: 'Sarah Boasman', Mathematics: 'Sam Boasman', Engineering: 'Sam Boasman' };
+  const credMap  = { Physics: 'MEd Leadership', Biology: 'MEd Leadership', Mathematics: 'MSc AI (in progress)', Engineering: 'MSc AI (in progress)' };
+  state.tutor = tutorMap[subj];
+  state.cred  = credMap[subj];
   document.getElementById('modal-tutor-name').textContent = state.tutor;
   document.getElementById('modal-subject').textContent = subj + ' Tutor — MEd Leadership';
   renderStep();
@@ -2424,7 +2654,196 @@ function sendBookingEmail(bookingState) {
 }
 
 
-// ===== TESLA BALL ANIMATION =====
+// ===== ABACUS ANIMATION (Maths) =====
+(function() {
+  const canvas = document.getElementById('sine-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const ROWS = 5;
+  const BEADS_PER_ROW = 9;
+  const BEAD_R = 7;
+  const BEAD_COLOR = 'rgba(122,48,32,0.85)';
+  const BEAD_HIGHLIGHT = 'rgba(180,90,50,0.9)';
+  const ROD_COLOR = 'rgba(122,48,32,0.3)';
+  const FRAME_COLOR = 'rgba(122,48,32,0.45)';
+
+  // Each row has a target count (beads pushed left) and current animated positions
+  let rows = Array.from({length: ROWS}, (_, i) => ({
+    target: Math.floor(Math.random() * BEADS_PER_ROW),
+    current: Math.random() * BEADS_PER_ROW,
+    speed: 0.018 + Math.random() * 0.012,
+    pauseTimer: Math.random() * 120,
+  }));
+
+  function draw() {
+    const w = canvas.offsetWidth, h = canvas.offsetHeight;
+    canvas.width = w; canvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    const padX = w * 0.1, padY = h * 0.12;
+    const innerW = w - padX * 2, innerH = h - padY * 2;
+    const rowH = innerH / ROWS;
+
+    // Frame
+    ctx.strokeStyle = FRAME_COLOR;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(padX, padY, innerW, innerH);
+
+    // Divider line (separates 2 heaven beads from 5 earth beads — classic abacus)
+    const divX = padX + innerW * 0.3;
+    ctx.beginPath();
+    ctx.moveTo(divX, padY);
+    ctx.lineTo(divX, padY + innerH);
+    ctx.strokeStyle = 'rgba(122,48,32,0.2)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    for (let r = 0; r < ROWS; r++) {
+      const row = rows[r];
+      const cy = padY + rowH * r + rowH / 2;
+
+      // Rod
+      ctx.beginPath();
+      ctx.moveTo(padX + 4, cy);
+      ctx.lineTo(padX + innerW - 4, cy);
+      ctx.strokeStyle = ROD_COLOR;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Animate beads toward target
+      if (row.pauseTimer > 0) {
+        row.pauseTimer--;
+      } else {
+        if (Math.abs(row.current - row.target) < 0.05) {
+          row.target = Math.floor(Math.random() * (BEADS_PER_ROW + 1));
+          row.pauseTimer = 60 + Math.random() * 120;
+        }
+        row.current += (row.target - row.current) * row.speed;
+      }
+
+      // Draw beads
+      const slotW = innerW / (BEADS_PER_ROW + 1);
+      for (let b = 0; b < BEADS_PER_ROW; b++) {
+        // b < row.current means pushed left (active)
+        const active = b < row.current;
+        let bx;
+        if (active) {
+          // Left side — packed from left
+          bx = padX + slotW * (b + 1);
+        } else {
+          // Right side — packed from right
+          const rightIdx = BEADS_PER_ROW - 1 - b;
+          bx = padX + innerW - slotW * (BEADS_PER_ROW - b);
+        }
+
+        // Smooth interpolation for the transitioning bead
+        if (Math.abs(b - row.current) < 1) {
+          const frac = b < row.current ? row.current - b : b - row.current;
+          const leftX = padX + slotW * (b + 1);
+          const rightX = padX + innerW - slotW * (BEADS_PER_ROW - b);
+          bx = active ? leftX + (rightX - leftX) * (1 - frac) : rightX - (rightX - leftX) * (1 - frac);
+        }
+
+        // Bead body
+        const grad = ctx.createRadialGradient(bx - 2, cy - 2, 1, bx, cy, BEAD_R);
+        grad.addColorStop(0, active ? BEAD_HIGHLIGHT : 'rgba(180,140,120,0.6)');
+        grad.addColorStop(1, active ? BEAD_COLOR : 'rgba(122,48,32,0.35)');
+        ctx.beginPath();
+        ctx.ellipse(bx, cy, BEAD_R, BEAD_R * 0.72, 0, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ===== SPINNING COGS ANIMATION (Engineering) =====
+(function() {
+  const canvas = document.getElementById('matrix-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let angle = 0;
+
+  function drawCog(cx, cy, outerR, innerR, teeth, angleOffset, color, alpha) {
+    const toothAngle = (Math.PI * 2) / teeth;
+    ctx.beginPath();
+    for (let i = 0; i < teeth; i++) {
+      const a0 = angleOffset + i * toothAngle - toothAngle * 0.2;
+      const a1 = angleOffset + i * toothAngle + toothAngle * 0.2;
+      const a2 = angleOffset + i * toothAngle + toothAngle * 0.5;
+      const a3 = angleOffset + (i + 1) * toothAngle - toothAngle * 0.5;
+      // Tooth tip
+      ctx.lineTo(cx + Math.cos(a0) * outerR, cy + Math.sin(a0) * outerR);
+      ctx.lineTo(cx + Math.cos(a1) * outerR, cy + Math.sin(a1) * outerR);
+      // Valley between teeth
+      ctx.lineTo(cx + Math.cos(a2) * innerR, cy + Math.sin(a2) * innerR);
+      ctx.lineTo(cx + Math.cos(a3) * innerR, cy + Math.sin(a3) * innerR);
+    }
+    ctx.closePath();
+    ctx.fillStyle = color.replace('ALPHA', alpha * 0.55);
+    ctx.fill();
+    ctx.strokeStyle = color.replace('ALPHA', alpha * 0.85);
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    // Hub circle
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerR * 0.38, 0, Math.PI * 2);
+    ctx.fillStyle = color.replace('ALPHA', alpha * 0.3);
+    ctx.fill();
+    ctx.strokeStyle = color.replace('ALPHA', alpha * 0.7);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Spoke details
+    for (let i = 0; i < 4; i++) {
+      const sa = angleOffset + i * Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(sa) * innerR * 0.4, cy + Math.sin(sa) * innerR * 0.4);
+      ctx.lineTo(cx + Math.cos(sa) * innerR * 0.75, cy + Math.sin(sa) * innerR * 0.75);
+      ctx.strokeStyle = color.replace('ALPHA', alpha * 0.5);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+  }
+
+  function draw() {
+    const w = canvas.offsetWidth, h = canvas.offsetHeight;
+    canvas.width = w; canvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    const COG_COLOR = 'rgba(74,44,110,ALPHA)';
+
+    // Large cog — centre-left
+    const cx1 = w * 0.38, cy1 = h * 0.48, r1 = Math.min(w, h) * 0.28;
+    drawCog(cx1, cy1, r1, r1 * 0.72, 12, angle, COG_COLOR, 0.9);
+
+    // Medium cog — meshing top-right
+    const teeth1 = 12, teeth2 = 8;
+    const meshDist = r1 + r1 * (teeth2 / teeth1) * 0.72;
+    const cx2 = cx1 + Math.cos(-0.6) * (r1 + r1 * 0.72 * (8/12)),
+          cy2 = cy1 + Math.sin(-0.6) * (r1 + r1 * 0.72 * (8/12));
+    const r2 = r1 * (teeth2 / teeth1);
+    const angleRatio2 = -(teeth1 / teeth2);
+    drawCog(cx2, cy2, r2, r2 * 0.72, teeth2, angle * angleRatio2 + Math.PI / teeth2, COG_COLOR, 0.75);
+
+    // Small cog — bottom right, meshing with large
+    const teeth3 = 6;
+    const cx3 = cx1 + Math.cos(1.9) * (r1 + r1 * 0.72 * (6/12));
+    const cy3 = cy1 + Math.sin(1.9) * (r1 + r1 * 0.72 * (6/12));
+    const r3 = r1 * (teeth3 / teeth1);
+    const angleRatio3 = -(teeth1 / teeth3);
+    drawCog(cx3, cy3, r3, r3 * 0.72, teeth3, angle * angleRatio3 + Math.PI / teeth3, COG_COLOR, 0.6);
+
+    angle += 0.008;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
 (function() {
   const canvas = document.getElementById('tesla-canvas');
   if (!canvas) return;
@@ -2652,6 +3071,8 @@ function sendBookingEmail(bookingState) {
       <div class="footer-col-title">Subjects</div>
       <a class="footer-link" onclick="showPage('physics')">Physics</a>
       <a class="footer-link" onclick="showPage('biology')">Biology</a>
+      <a class="footer-link" onclick="showPage('maths')">Mathematics</a>
+      <a class="footer-link" onclick="showPage('engineering')">Engineering</a>
       <a class="footer-link" onclick="showPage('resources')">Resources</a>
       <a class="footer-link" onclick="showPage('studytips')">Study Tips</a>
     </div>
